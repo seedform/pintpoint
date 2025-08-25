@@ -1,7 +1,8 @@
-import Beer from "../data/beer"
-import store from "../data/store"
-import beersAPI from "../data/beer-slice"
 import { Link } from "react-router"
+
+import Beer from "../data/beer"
+import beersAPI from "../data/beer-slice"
+import store from "../data/store"
 import "./demo-button.css"
 
 const DEMO_BEERS = [
@@ -42,20 +43,20 @@ const DEMO_BEERS = [
 function demo(event) {
   event.preventDefault()
   for (let beer of DEMO_BEERS) {
-    store.dispatch(beersAPI.endpoints.addBeer.initiate({...beer}))
+    store.dispatch(beersAPI.endpoints.addBeer.initiate({ ...beer }))
   }
 }
 
 export default function DemoButton() {
-
-  return <>
-    <Link
-      id="demo-add-btn"
-      onClick={demo}
-      className="button is-size-3 is-warning is-rounded"
-    >
-      demo
-    </Link>
-  </>
-
+  return (
+    <>
+      <Link
+        id="demo-add-btn"
+        onClick={demo}
+        className="button is-size-3 is-warning is-rounded"
+      >
+        demo
+      </Link>
+    </>
+  )
 }

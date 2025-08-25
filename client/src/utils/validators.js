@@ -1,5 +1,5 @@
 export function validateABV(value) {
-  return value === "" || /^[1-9]?[0-9](\.[0-9])?$/.test(value)
+  return value === "" || /^[1-9]?\d(\.\d)?$/.test(value)
 }
 
 export function notEmpty(value) {

@@ -1,11 +1,13 @@
 import js from "@eslint/js"
 import reactHooks from "eslint-plugin-react-hooks"
 import reactRefresh from "eslint-plugin-react-refresh"
+import eslintPluginUnicorn from "eslint-plugin-unicorn"
 import { defineConfig, globalIgnores } from "eslint/config"
 import globals from "globals"
 
 export default defineConfig([
   globalIgnores(["dist"]),
+  eslintPluginUnicorn.configs.recommended,
   {
     files: ["**/*.{js,jsx}"],
     extends: [
@@ -24,6 +26,8 @@ export default defineConfig([
     },
     rules: {
       "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
+      "unicorn/better-regex": "warn",
+      "unicorn/prevent-abbreviations": "off",
     },
   },
 ])

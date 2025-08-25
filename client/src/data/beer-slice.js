@@ -1,15 +1,18 @@
-import { addBeerPersist, getBeersPersist, removeBeerPersist } from "./persistence"
+import { createApi } from "@reduxjs/toolkit/query/react"
+
 import { fakeNetworkDelay } from "../utils/nextwork"
-
-
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {
+  addBeerPersist,
+  getBeersPersist,
+  removeBeerPersist,
+} from "./persistence"
 
 async function getBeersQuery() {
   try {
     await fakeNetworkDelay(500)
     return { data: await getBeersPersist() }
   } catch (error) {
-    return {error}
+    return { error }
   }
 }
 
@@ -18,16 +21,16 @@ async function addBeerMutation(beer) {
     await fakeNetworkDelay(500)
     return { data: await addBeerPersist(beer) }
   } catch (error) {
-    return {error}
+    return { error }
   }
 }
 
 async function removeBeerMutation(id) {
   try {
-    await fakeNetworkDelay(500) 
+    await fakeNetworkDelay(500)
     return { data: await removeBeerPersist(id) }
   } catch (error) {
-    return {error}
+    return { error }
   }
 }
 
@@ -37,25 +40,21 @@ const beersAPI = createApi({
   endpoints: (build) => ({
     getBeers: build.query({
       queryFn: getBeersQuery,
-      providesTags: ["beer"]
+      providesTags: ["beer"],
     }),
     addBeer: build.mutation({
       queryFn: addBeerMutation,
-      invalidatesTags: ["beer"]
+      invalidatesTags: ["beer"],
     }),
     removeBeer: build.mutation({
       queryFn: removeBeerMutation,
-      invalidatesTags: ["beer"]
-    })
-  })
+      invalidatesTags: ["beer"],
+    }),
+  }),
 })
 
-
 // auto-generated hooks
-export const { 
-  useGetBeersQuery, 
-  useAddBeerMutation,
-  useRemoveBeerMutation
-} = beersAPI
+export const { useGetBeersQuery, useAddBeerMutation, useRemoveBeerMutation } =
+  beersAPI
 
 export default beersAPI
