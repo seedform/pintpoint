@@ -1,7 +1,7 @@
-import { Outlet, useNavigate } from "react-router"
-
 import "bulma/css/bulma.min.css"
 import { useEffect } from "react"
+import { Outlet, useNavigate } from "react-router"
+
 import "./root.css"
 
 export default function Root() {
@@ -9,7 +9,7 @@ export default function Root() {
 
   useEffect(() => {
     navigate("./beers")
-  }, [])
+  })
 
   return (
     <>
