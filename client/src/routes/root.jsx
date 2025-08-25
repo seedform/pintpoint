@@ -8,7 +8,6 @@ export default function Root() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    console.debug("redirecting to /beers")
     navigate("./beers")
   }, [])
 

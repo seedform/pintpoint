@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit"
-import beerCollectionReducer from "./beer-collection-slice"
+import beersAPI from "./beer-slice"
+import { setupListeners } from '@reduxjs/toolkit/query'
 
 const logger = (store) => (next) => (action) => {
   console.group(action.type)
@@ -10,11 +11,16 @@ const logger = (store) => (next) => (action) => {
   return result
 }
 
-export default configureStore({
+const store = configureStore({
   reducer: {
-    beerCollection: beerCollectionReducer,
+    [beersAPI.reducerPath]: beersAPI.reducer
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(logger)
+    return getDefaultMiddleware().concat(logger, beersAPI.middleware)
   },
 })
+
+// required for refetchOnFocus/refetchOnReconnect
+setupListeners(store.dispatch)
+
+export default store
