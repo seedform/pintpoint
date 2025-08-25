@@ -1,7 +1,6 @@
-import localforage from "localforage"
-import {v4 as uuidv4} from "uuid"
-
 import { Mutex } from "async-mutex"
+import localforage from "localforage"
+import { v4 as uuidv4 } from "uuid"
 
 const LOCK = new Mutex()
 const KEY = "beers"
@@ -9,7 +8,7 @@ const KEY = "beers"
 export async function getBeersPersist() {
   console.debug("getting beers from local storage")
   let beers = await localforage.getItem(KEY)
-  beers = beers ? beers : {}
+  beers = beers || {}
   return beers
 }
 
@@ -36,7 +35,7 @@ export async function removeBeerPersist(id) {
 }
 
 export async function dropDB() {
-  const release = await LOCK.acquire();
+  const release = await LOCK.acquire()
   console.warn("dropping database")
   await localforage.setItem(KEY, {})
   release()

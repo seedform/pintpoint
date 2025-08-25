@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Form, useNavigate } from "react-router"
+
 import BEER_STYLES from "../data/beer-styles"
 import COUNTRIES from "../data/countries"
 import { notEmpty, validateABV } from "../utils/validators"
@@ -42,7 +43,7 @@ export default function BeerForm() {
       formState.fields[name].value,
       "->",
       value,
-      `[${valid ? "valid" : "invalid"}]`
+      `[${valid ? "valid" : "invalid"}]`,
     )
     newState.fields[name] = { value, valid }
     newState.valid = Object.values(formState.fields)

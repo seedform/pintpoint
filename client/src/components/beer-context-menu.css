@@ -1,6 +1,6 @@
 .menu-icon {
   mask-image: url("../assets/line-md--menu.svg");
-    min-width: 100%;
+  min-width: 100%;
   min-height: 100%;
   stroke: currentColor;
   fill: white;
@@ -9,8 +9,8 @@
   background-repeat: no-repeat;
   background-position: center;
   background-color: white;
-    /* fill: currentColor; */
-    /* display: inline-block;
+  /* fill: currentColor; */
+  /* display: inline-block;
     width: 1em;
     height: 1em;
     stroke-width: 0;
@@ -21,7 +21,8 @@
     vertical-align: middle; */
 }
 
-.menu-icon:hover, .menu-icon-active {
+.menu-icon:hover,
+.menu-icon-active {
   mask-image: url("../assets/line-md--menu-unfold-right.svg");
-  background-color: #F28E1C;
+  background-color: #f28e1c;
 }

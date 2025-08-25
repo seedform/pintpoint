@@ -20,7 +20,7 @@ export default class Beer {
    */
   constructor({ brand, product, style, abv, origin, tastingNotes, count }) {
     style = style ? String(style).toLocaleLowerCase() : style
-    count = count ? count : 0
+    count = count || 0
 
     if (!brand || !product) {
       throw new TypeError("brand AND product name must be provided")

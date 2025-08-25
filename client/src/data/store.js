@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit"
+import { setupListeners } from "@reduxjs/toolkit/query"
+
 import beersAPI from "./beer-slice"
-import { setupListeners } from '@reduxjs/toolkit/query'
 
 const logger = (store) => (next) => (action) => {
   console.group(action.type)
@@ -13,10 +14,10 @@ const logger = (store) => (next) => (action) => {
 
 const store = configureStore({
   reducer: {
-    [beersAPI.reducerPath]: beersAPI.reducer
+    [beersAPI.reducerPath]: beersAPI.reducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(logger, beersAPI.middleware)
+    return [...getDefaultMiddleware(), logger, beersAPI.middleware]
   },
 })
 

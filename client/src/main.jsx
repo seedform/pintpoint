@@ -1,14 +1,13 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
-import { createBrowserRouter, RouterProvider } from "react-router"
+import { RouterProvider, createBrowserRouter } from "react-router"
 
+import store from "./data/store"
 import addBeerAction from "./routes/actions/add-beer"
 import AddBeer from "./routes/add-beer"
 import Beers from "./routes/beers"
 import Root from "./routes/root"
-
-import store from "./data/store"
 
 let router = createBrowserRouter([
   {
@@ -28,7 +27,7 @@ let router = createBrowserRouter([
   },
 ])
 
-createRoot(document.getElementById("root")).render(
+createRoot(document.querySelector("#root")).render(
   <StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
