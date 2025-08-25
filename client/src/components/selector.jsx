@@ -1,43 +1,27 @@
-import { useEffect } from "react"
-
 export default function Selector({
-  value,
-  setValue,
-  valid,
-  setValid,
-  values,
-  placeholder,
+  name,
   label,
-  fieldName,
+  options,
+  state,
+  placeholder,
+  handler,
 }) {
-  const valueSet = new Set(values)
-
-  useEffect(() => {
-    const isValid = valueSet.has(value)
-    console.debug(`${label}: ${isValid ? "valid" : "invalid"}`)
-    setValid(isValid)
-  }, [value])
-
-  const onChange = (event) => {
-    const eValue = event.target.value
-    console.debug(`${label}: ${value} -> ${eValue}`)
-    setValue(eValue)
-  }
-
   return (
     <>
       <div className="field">
         <label className="label">{label}</label>
         <div className="control">
-          <div className={`select is-fullwidth ${valid ? "" : "is-warning"}`}>
+          <div
+            className={`select is-fullwidth ${state.fields[name].valid ? "" : "is-warning"}`}
+          >
             <select
               aria-label={label}
-              name={fieldName}
-              value={value}
-              onChange={onChange}
+              name={name}
+              value={state.fields[name].value}
+              onChange={handler}
             >
               <option value={placeholder}>{placeholder}</option>
-              {values.map((v) => (
+              {options.map((v) => (
                 <option key={v} value={v}>
                   {v}
                 </option>

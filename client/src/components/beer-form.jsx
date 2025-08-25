@@ -1,46 +1,55 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Form, useNavigate } from "react-router"
 import BEER_STYLES from "../data/beer-styles"
 import COUNTRIES from "../data/countries"
+import { notEmpty, validateABV } from "../utils/validators"
 import InputABV from "./input-abv"
 import InputDetail from "./input-detail"
 import Selector from "./selector"
 
+const BASE_FORM_STATE = {
+  fields: {
+    brand: { value: "", valid: false },
+    product: { value: "", valid: false },
+    style: { value: "", valid: false },
+    origin: { value: "", valid: false },
+    abv: { value: "", valid: true },
+    notes: { value: "", valid: true },
+  },
+  valid: false,
+}
+
+const VALIDATORS = {
+  brand: notEmpty,
+  product: notEmpty,
+  style: (v) => new Set(BEER_STYLES).has(v),
+  origin: (v) => new Set(COUNTRIES).has(v),
+  abv: validateABV,
+  notes: (v) => v.length <= 1000,
+}
+
 export default function BeerForm() {
   const navigate = useNavigate()
 
-  const [brand, setBrand] = useState("")
-  const [brandValid, setbrandValid] = useState(true)
+  const [formState, setFormState] = useState(BASE_FORM_STATE)
 
-  const [product, setProduct] = useState("")
-  const [productValid, setProductValid] = useState(true)
-
-  const [beerStyle, setBeerStyle] = useState("")
-  const [beerStyleValid, setBeerStyleValid] = useState(true)
-
-  const [origin, setOrigin] = useState("")
-  const [originValid, setOriginValid] = useState(true)
-
-  const [abv, setAbv] = useState(0)
-  const [abvValid, setAbvValid] = useState(true)
-
-  const [notes, setNotes] = useState("")
-
-  const [formValid, setFormValid] = useState(false)
-
-  const validations = [
-    brandValid,
-    productValid,
-    beerStyleValid,
-    originValid,
-    abvValid,
-  ]
-
-  useEffect(() => {
-    const formValidity = validations.every(Boolean)
-    console.debug(`form: ${formValidity ? "valid" : "invalid"}`)
-    setFormValid(formValidity)
-  }, [...validations])
+  const handler = (event) => {
+    const newState = { ...formState }
+    const { name, value } = event.target
+    const valid = VALIDATORS[name](value)
+    console.debug(
+      `${name}:`,
+      formState.fields[name].value,
+      "->",
+      value,
+      `[${valid ? "valid" : "invalid"}]`
+    )
+    newState.fields[name] = { value, valid }
+    newState.valid = Object.values(formState.fields)
+      .map((field) => field.valid)
+      .every(Boolean)
+    setFormState(newState)
+  }
 
   return (
     <>
@@ -50,22 +59,18 @@ export default function BeerForm() {
             <div className="columns is-multiline">
               <div className="column is-half">
                 <InputDetail
+                  name="product"
                   label="Beer Name"
-                  fieldName="product"
-                  value={product}
-                  setValue={setProduct}
-                  valid={productValid}
-                  setValid={setProductValid}
+                  state={formState}
+                  handler={handler}
                 />
               </div>
               <div className="column is-half">
                 <InputDetail
+                  name="brand"
                   label="Brand"
-                  fieldName="brand"
-                  value={brand}
-                  setValue={setBrand}
-                  valid={brandValid}
-                  setValid={setbrandValid}
+                  state={formState}
+                  handler={handler}
                 />
               </div>
             </div>
@@ -73,36 +78,30 @@ export default function BeerForm() {
             <div className="columns is-multiline">
               <div className="column is-one-third">
                 <Selector
+                  name="style"
                   label="Beer Style"
-                  fieldName="style"
+                  options={BEER_STYLES}
                   placeholder="Choose a Style..."
-                  values={BEER_STYLES}
-                  value={beerStyle}
-                  setValue={setBeerStyle}
-                  valid={beerStyleValid}
-                  setValid={setBeerStyleValid}
+                  state={formState}
+                  handler={handler}
                 />
               </div>
               <div className="column is-one-third">
                 <Selector
+                  name="origin"
                   label="Origin"
-                  fieldName="origin"
+                  options={COUNTRIES}
+                  state={formState}
                   placeholder="Select a country..."
-                  values={COUNTRIES}
-                  value={origin}
-                  setValue={setOrigin}
-                  valid={originValid}
-                  setValid={setOriginValid}
+                  handler={handler}
                 />
               </div>
               <div className="column is-one-third">
                 <InputABV
+                  name="abv"
                   label="Alcohol by Volume (%)"
-                  fieldName="abv"
-                  value={abv}
-                  setValue={setAbv}
-                  valid={abvValid}
-                  setValid={setAbvValid}
+                  state={formState}
+                  handler={handler}
                 />
               </div>
             </div>
@@ -113,8 +112,8 @@ export default function BeerForm() {
                 <textarea
                   aria-label="Tasting Notes"
                   name="notes"
-                  value={notes}
-                  onChange={(event) => setNotes(event.target.value)}
+                  value={formState.fields.notes.value}
+                  onChange={handler}
                   className="textarea"
                   placeholder="Notes..."
                 />
@@ -125,8 +124,8 @@ export default function BeerForm() {
               <div className="control">
                 <button
                   type="submit"
-                  className={`button is-link ${formValid ? "is-warning" : "is-danger"}`}
-                  disabled={!formValid}
+                  className={`button is-link ${formState.valid ? "is-warning" : "is-danger"}`}
+                  disabled={!formState.valid}
                 >
                   Add
                 </button>

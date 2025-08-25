@@ -1,7 +1,8 @@
 import Beer from "../data/beer"
-import { addBeer } from "../data/beer-collection-slice"
 import store from "../data/store"
-import { fakeNetworkDelay } from "./nextwork"
+import beersAPI from "../data/beer-slice"
+import { Link } from "react-router"
+import "./demo-button.css"
 
 const DEMO_BEERS = [
   new Beer({
@@ -38,10 +39,23 @@ const DEMO_BEERS = [
   }),
 ]
 
-export default async function () {
+function demo(event) {
+  event.preventDefault()
   for (let beer of DEMO_BEERS) {
-    await fakeNetworkDelay()
-    console.log("adding demo beer:", beer)
-    store.dispatch(addBeer({ ...beer }))
+    store.dispatch(beersAPI.endpoints.addBeer.initiate({...beer}))
   }
+}
+
+export default function DemoButton() {
+
+  return <>
+    <Link
+      id="demo-add-btn"
+      onClick={demo}
+      className="button is-size-3 is-warning is-rounded"
+    >
+      demo
+    </Link>
+  </>
+
 }
