@@ -1,6 +1,6 @@
 import BeerContextMenu from "./beer-context-menu"
 
-export default function BeerView({ beer, id }) {
+export default function Beer({ beer, id }) {
   return (
     <>
       <div className="column is-one-third">
@@ -13,16 +13,34 @@ export default function BeerView({ beer, id }) {
                 </figure>
               </div>
               <div className="media-content">
-                <p className="title is-4">{beer.product}</p>
-                <p className="subtitle is-6">by {beer.brand}</p>
+                <p title="product" className="title is-4">
+                  {beer.product}
+                </p>
+                <p title="brand" className="subtitle is-6">
+                  by {beer.brand}
+                </p>
               </div>
             </div>
 
             <div className="content">
               <div className="tags">
-                <span className="tag">{beer.style}</span>
-                <span className="tag">{beer.abv}%</span>
-                <span className="tag">{beer.origin}</span>
+                {beer.style && (
+                  <span title="style" className="tag">
+                    {beer.style}
+                  </span>
+                )}
+
+                {(beer.abv || parseFloat(beer.abv) == 0) && (
+                  <span title="abv" className="tag">
+                    {beer.abv == 0 ? "non-alcoholic" : `${beer.abv}%`}
+                  </span>
+                )}
+
+                {beer.origin && (
+                  <span title="origin" className="tag">
+                    {beer.origin}
+                  </span>
+                )}
               </div>
               <BeerContextMenu id={id} />
             </div>

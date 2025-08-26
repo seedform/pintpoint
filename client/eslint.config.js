@@ -1,4 +1,5 @@
 import js from "@eslint/js"
+import vitest from "@vitest/eslint-plugin"
 import reactHooks from "eslint-plugin-react-hooks"
 import reactRefresh from "eslint-plugin-react-refresh"
 import eslintPluginUnicorn from "eslint-plugin-unicorn"
@@ -6,7 +7,7 @@ import { defineConfig, globalIgnores } from "eslint/config"
 import globals from "globals"
 
 export default defineConfig([
-  globalIgnores(["dist"]),
+  globalIgnores(["dist", "coverage"]),
   eslintPluginUnicorn.configs.recommended,
   {
     files: ["**/*.{js,jsx}"],
@@ -17,14 +18,21 @@ export default defineConfig([
     ],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...vitest.environments.env.globals,
+      },
       parserOptions: {
         ecmaVersion: "latest",
         ecmaFeatures: { jsx: true },
         sourceType: "module",
       },
     },
+    plugins: {
+      vitest,
+    },
     rules: {
+      ...vitest.configs.recommended.rules,
       "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
       "unicorn/better-regex": "warn",
       "unicorn/prevent-abbreviations": "off",

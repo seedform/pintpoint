@@ -9,7 +9,7 @@ export default function Root() {
 
   useEffect(() => {
     navigate("./beers")
-  })
+  }, [navigate])
 
   return (
     <>

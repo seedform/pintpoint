@@ -1,7 +1,7 @@
 import { Link } from "react-router"
 
 import { useGetBeersQuery } from "../data/beer-slice"
-import BeerView from "./beer"
+import Beer from "./beer"
 import "./beer-list.css"
 import DemoButton from "./demo-button"
 
@@ -13,7 +13,7 @@ export default function BeerList() {
   }
 
   const view = Object.entries(beers).map(([k, v]) => (
-    <BeerView key={k} id={k} beer={v} />
+    <Beer key={k} id={k} beer={v} />
   ))
 
   return (
