@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 import { useRemoveBeerMutation } from "../data/beer-slice"
-import "./beer.css"
+import "./beer-context-menu.css"
 
 export default function BeerContextMenu({ id }) {
   const [showMenu, setShowMenu] = useState(false)
