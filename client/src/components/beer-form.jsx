@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Form, useNavigate } from "react-router"
 
 import BEER_STYLES from "../data/beer-styles"
@@ -12,8 +12,8 @@ const BASE_FORM_STATE = {
   fields: {
     brand: { value: "", valid: false },
     product: { value: "", valid: false },
-    style: { value: "", valid: true },
-    origin: { value: "", valid: true },
+    style: { value: "", valid: false },
+    origin: { value: "", valid: false },
     abv: { value: "", valid: true },
     notes: { value: "", valid: true },
   },
@@ -23,22 +23,16 @@ const BASE_FORM_STATE = {
 const VALIDATORS = {
   brand: notEmpty,
   product: notEmpty,
-  style: (v) => new Set(BEER_STYLES).has(v) || v == "",
-  origin: (v) => new Set(COUNTRIES).has(v) || v == "",
+  style: (v) => new Set(BEER_STYLES).has(v),
+  origin: (v) => new Set(COUNTRIES).has(v),
   abv: validateABV,
   notes: (v) => v.length <= 1000,
 }
 
 export default function BeerForm() {
-  // TODO: bugfix -> form values not reset when opened again
-
   const navigate = useNavigate()
 
   const [formState, setFormState] = useState(BASE_FORM_STATE)
-
-  useEffect(() => {
-    setFormState(BASE_FORM_STATE)
-  }, [])
 
   const handler = (event) => {
     const newState = { ...formState }

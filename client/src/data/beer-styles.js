@@ -1,6 +1,8 @@
 // based on classic terminologies with convenient North-American additions
 
 const BEER_STYLES = [
+  "beer",
+  "non-alcoholic",
   "altbier",
   "amber ale",
   "barley wine",

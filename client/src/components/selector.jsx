@@ -20,7 +20,7 @@ export default function Selector({
               value={state.fields[name].value}
               onChange={handler}
             >
-              <option value="">{placeholder}</option>
+              <option value={placeholder}>{placeholder}</option>
               {options.map((v) => (
                 <option key={v} value={v}>
                   {v}
